@@ -12,7 +12,7 @@ You are required to create a command-line interface (CLI) utility that will down
 
 - Ruby 2.7+
 - Any external libraries can be used 
-- Ruby Style Guide ([Shopify](https://ruby-style-guide.shopify.dev/)
+- Ruby Style Guide ([Shopify](https://ruby-style-guide.shopify.dev/))
 - If time allows, you may write tests for the utility
 
 The wallpaper download script should run with the following parameters:
