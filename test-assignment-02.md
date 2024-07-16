@@ -1,6 +1,5 @@
 ## AI Wallpaper Downloader
 
-
 The Smashing Magazine website publishes desktop wallpapers every month. Let's automate the task of checking and downloading wallpapers for a specific theme for a given month. So, we need to write a CLI utility that will download all wallpapers matching the specified theme for the specified month-year into the user's current directory. Here are all the wallpapers (https://www.smashingmagazine.com/category/wallpapers), and here are the wallpapers for July 2024 (https://www.smashingmagazine.com/2024/06/desktop-wallpaper-calendars-july-2024/).
 
 ### Conditions
@@ -13,11 +12,14 @@ The Smashing Magazine website publishes desktop wallpapers every month. Let's au
 
 It is assumed that the wallpaper download script will be run with parameters, for example:
 
+```
 /smashing.rb --month 022024 --theme animals
+```
 
 or
-
+```
 ./smashing.rb --month 042024 --theme flowers
+```
 
 ### Features
 
