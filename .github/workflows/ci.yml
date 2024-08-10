@@ -1,0 +1,42 @@
+name: CI
+
+on: [pull_request,push]
+
+jobs:
+  rubocop:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2.1.0
+    - uses: jitterbit/get-changed-files@v1
+      id: changed_files
+      # This flag is needed if current branch is not rebased from master.
+      continue-on-error: true
+      with:
+        format: space-delimited
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+
+    - name: Run rubocop
+      run: bundle exec rubocop --force-exclusion ${{steps.changed_files.outputs.added_modified}}
+
+  rspec:
+    env:
+      RAILS_ENV: test
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+
+    - name: Run tests
+      run: bundle exec rspec spec/
