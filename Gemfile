@@ -2,6 +2,8 @@
 
 source 'https://rubygems.org'
 
+gem 'dotenv'
+gem 'httparty'
 gem 'nokogiri'
 
 group :development, :test do

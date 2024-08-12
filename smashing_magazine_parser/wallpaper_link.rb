@@ -12,6 +12,10 @@ module SmashingMagazineParser
       self.with_calendar = with_calendar
     end
 
+    def extension
+      url.split('.')[-1]
+    end
+
     private
 
     attr_writer :url, :size, :preview, :with_calendar
