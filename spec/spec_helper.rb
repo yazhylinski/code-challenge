@@ -1,4 +1,5 @@
 # frozen_string_literal: true
 
 require 'date'
-Dir['**/*.rb'].each { |f| require "./#{f}" }
+
+require_relative '../smashing_magazine_parser/url_builder'
