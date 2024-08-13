@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'dotenv'
-Dotenv.load('.env')
+Dotenv.load('.env', '.env.local')
 
 require 'httparty'
 require 'nokogiri'
@@ -15,6 +15,8 @@ require_relative 'logger'
 require_relative 'smashing_magazine_parser/url_builder'
 require_relative 'smashing_magazine_parser/wallpapers_builder'
 require_relative 'smashing_magazine_parser/save_images_service'
+require_relative 'smashing_magazine_parser/filtering_service'
+require_relative 'smashing_magazine_parser/anthropic_cloude/recognize_image_by_theme_strategy'
 
 begin
   arguments = Cli::ArgumentsValidator.new.call
@@ -41,8 +43,15 @@ Logger.info('HTML is fetched and parsed')
 wallpapers = SmashingMagazineParser::WallpapersBuilder.new(html_doc).build
 Logger.info("Parsed #{wallpapers.length} wallpapers")
 
+filtered_wallpapers = SmashingMagazineParser::FilteringService.new(
+  wallpapers,
+  SmashingMagazineParser::AnthropicCloude::RecognizeImageByThemeStrategy.new(arguments.theme)
+).call
+
+Logger.info("Found #{filtered_wallpapers.length} wallpapers for current theme")
+
 subdir = "#{arguments.date.year}/#{arguments.date.month}/#{arguments.theme}"
 
-SmashingMagazineParser::SaveImagesService.new(wallpapers, subdir).call
+SmashingMagazineParser::SaveImagesService.new(filtered_wallpapers, subdir).call
 
 Logger.info('Finished!')

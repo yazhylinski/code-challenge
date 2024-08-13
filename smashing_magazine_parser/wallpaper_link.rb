@@ -16,6 +16,10 @@ module SmashingMagazineParser
       url.split('.')[-1]
     end
 
+    def calculated_size
+      size.split('x').map(&:to_i).inject(:*)
+    end
+
     private
 
     attr_writer :url, :size, :preview, :with_calendar

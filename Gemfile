@@ -2,6 +2,8 @@
 
 source 'https://rubygems.org'
 
+gem 'addressable'
+gem 'anthropic'
 gem 'dotenv'
 gem 'httparty'
 gem 'nokogiri'

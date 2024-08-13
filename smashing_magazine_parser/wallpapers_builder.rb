@@ -3,6 +3,8 @@
 require_relative 'wallpaper_link'
 require_relative 'wallpaper'
 
+require 'addressable/uri'
+
 module SmashingMagazineParser
   class WallpapersBuilder
     attr_reader :wallpapers
@@ -40,6 +42,9 @@ module SmashingMagazineParser
         # If it's not matched it's not wallpaper image.
         # not wallpaper
         return unless url['smashingmagazine.com/files/wallpapers/']
+
+        # Fixing URI must be ascii only
+        url = Addressable::URI.escape(url)
 
         parse_wallpaper_image(tag, url)
       end
