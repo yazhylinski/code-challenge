@@ -4,19 +4,17 @@ require_relative '../spec_helper'
 
 RSpec.describe SmashingMagazineParser::SaveImagesService do
   before do
-    FileUtils.remove_dir('test_images')
+    FileUtils.remove_dir('test_images') if File.directory?('test_images')
   end
 
   describe '#call' do
-    let(:date) { Date.new(2023, 1, 1) }
-
     it 'creates a folder for images' do
-      described_class.new([], date).call
+      described_class.new([], '2023/1').call
 
       expect(File.directory?('test_images/2023/1')).to eq(true)
 
       # Check that it's not raise error if it's called twice
-      described_class.new([], date).call
+      described_class.new([], '2023/1').call
     end
 
     it 'creates a folder for wallpaper' do
@@ -24,13 +22,10 @@ RSpec.describe SmashingMagazineParser::SaveImagesService do
         [
           instance_double('SmashingMagazineParser::Wallpaper', name: 'wp', links: [])
         ],
-        date
+        '2023/1'
       ).call
 
       expect(File.directory?('test_images/2023/1/wp')).to eq(true)
-
-      # Check that it's not raise error if it's called twice
-      described_class.new([], date).call
     end
 
     it 'uploads image to wallpaper folder' do
@@ -75,14 +70,11 @@ RSpec.describe SmashingMagazineParser::SaveImagesService do
                             )
                           ])
         ],
-        date
+        '2023/1'
       ).call
 
       expect(File.exist?('test_images/2023/1/wp/preview.jpg')).to eq(true)
       expect(File.exist?('test_images/2023/1/wp/with calendar 3x4.jpg')).to eq(true)
-
-      # Check that it's not raise error if it's called twice
-      described_class.new([], date).call
     end
   end
 end

@@ -6,15 +6,15 @@ require 'httparty'
 module SmashingMagazineParser
   class SaveImagesService
     # @wallpapers Array<SmasingMagazineParser::Wallpaper>
-    # @date Date
-    def initialize(wallpapers, date)
+    # @subdir String
+    def initialize(wallpapers, subdir)
       self.wallpapers = wallpapers
-      self.date = date
+      self.subdir = subdir
     end
 
     def call
       create_images_folder
-      save_images
+      save_wallpapers
     end
 
     private
@@ -24,21 +24,33 @@ module SmashingMagazineParser
     end
 
     def images_folder
-      "#{ENV.fetch('SMASHING_MAGAZINE_PARSER_IMAGES_FOLDER')}/#{date.year}/#{date.month}"
+      "#{ENV.fetch('SMASHING_MAGAZINE_PARSER_IMAGES_FOLDER')}/#{subdir}"
     end
 
     def wallpaper_folder(wallpaper)
       "#{images_folder}/#{wallpaper.name}/"
     end
 
-    def save_images
-      wallpapers.each do |wallpaper|
-        FileUtils.mkdir_p wallpaper_folder(wallpaper)
+    def save_wallpapers
+      wallpapers.each_with_index do |wallpaper, w_index|
+        Logger.info(
+          "#{w_index + 1}/#{wallpapers.length}. " \
+          "Starting to save wallpaper: #{wallpaper.name}. Total #{wallpaper.links.length} images"
+        )
 
-        wallpaper.links.each do |link|
-          File.write("#{wallpaper_folder(wallpaper)}#{link_filename(link)}.#{link.extension}",
-                     HTTParty.get(link.url, follow_redirects: true).body)
-        end
+        FileUtils.mkdir_p wallpaper_folder(wallpaper)
+        save_images(wallpaper)
+
+        Logger.info("Finished to save wallpaper: #{wallpaper.name}")
+      end
+    end
+
+    def save_images(wallpaper)
+      wallpaper.links.each_with_index do |link, l_index|
+        File.write("#{wallpaper_folder(wallpaper)}#{link_filename(link)}.#{link.extension}",
+                   HTTParty.get(link.url, follow_redirects: true).body)
+
+        Logger.info("\t#{l_index + 1}/#{wallpaper.links.length} Done")
       end
     end
 
@@ -58,6 +70,6 @@ module SmashingMagazineParser
       name
     end
 
-    attr_accessor :wallpapers, :date
+    attr_accessor :wallpapers, :subdir
   end
 end

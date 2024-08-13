@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 gem 'dotenv'
 gem 'httparty'
 gem 'nokogiri'
+gem 'optparse'
 
 group :development, :test do
   gem 'rspec'
