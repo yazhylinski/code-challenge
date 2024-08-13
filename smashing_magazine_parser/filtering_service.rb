@@ -16,7 +16,7 @@ module SmashingMagazineParser
     def call
       wallpapers.filter do |wallpaper|
         # Pick preview as it has smallest size
-        min_size_link = wallpaper.links.filter { !_1.size.nil? }.min(&:calculated_size)
+        min_size_link = wallpaper.links.filter { !_1.size.nil? }.min { |a, b| a.calculated_size <=> b.calculated_size }
 
         matched_theme = match_theme?(min_size_link)
 

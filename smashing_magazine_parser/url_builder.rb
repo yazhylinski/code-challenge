@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# There is a pattern to get wallpapers page by
+# month and year. It's much easier to build it
+# instead of try to reach it from dom.
 module SmashingMagazineParser
   class UrlBuilder
     WALLPAPERS_URL_PATTERN =
