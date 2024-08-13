@@ -21,7 +21,7 @@ module SmashingMagazineParser
       # headers have different ids for images.
       # The easisest way is just to iterate throught all
       # tags and add one by one.
-      html_doc.css('h2, ul li a').each do |tag|
+      html_doc.css('h2, h3, ul li a').each do |tag|
         parse_tag(tag)
       end
 
@@ -32,22 +32,31 @@ module SmashingMagazineParser
 
     def parse_tag(tag)
       # H2 tags is used for wallapaper name
-      if tag.name == 'h2'
+      if tag.name == 'h2' || tag.name == 'h3'
+        unless tag.attribute_nodes.find { _1.name == 'id' }
+          # not a wallpaper
+          return
+        end
+
         wallpapers << Wallpaper.new(tag.children[0].text)
       else
-        # This branch is used for links
-        url = tag.attribute_nodes.find { _1.name == 'href' }.value
-
-        # To skip other anchors checking the url.
-        # If it's not matched it's not wallpaper image.
-        # not wallpaper
-        return unless url['smashingmagazine.com/files/wallpapers/']
-
-        # Fixing URI must be ascii only
-        url = Addressable::URI.escape(url)
-
-        parse_wallpaper_image(tag, url)
+        handle_image_tag(tag)
       end
+    end
+
+    def handle_image_tag(tag)
+      # This branch is used for links
+      url = tag.attribute_nodes.find { _1.name == 'href' }.value
+
+      # To skip other anchors checking the url.
+      # If it's not matched it's not wallpaper image.
+      # not wallpaper
+      return unless url['smashingmagazine.com/files/wallpapers/']
+
+      # Fixing URI must be ascii only
+      url = Addressable::URI.escape(url)
+
+      parse_wallpaper_image(tag, url)
     end
 
     def parse_wallpaper_image(tag, url)
