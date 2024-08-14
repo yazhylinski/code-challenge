@@ -3,7 +3,7 @@
 require 'anthropic'
 require 'base64'
 
-require_relative '../../logger'
+require_relative '../../../logger'
 
 module SmashingMagazineParser
   module AnthropicCloude

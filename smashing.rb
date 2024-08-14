@@ -7,16 +7,16 @@ Dotenv.load('.env', '.env.local')
 require 'httparty'
 require 'nokogiri'
 
-require_relative 'cli/arguments_validator'
-require_relative 'cli/invalid_arguments_error'
+require_relative 'lib/cli/arguments_validator'
+require_relative 'lib/cli/invalid_arguments_error'
 
 require_relative 'logger'
 
-require_relative 'smashing_magazine_parser/url_builder'
-require_relative 'smashing_magazine_parser/wallpapers_builder'
-require_relative 'smashing_magazine_parser/save_images_service'
-require_relative 'smashing_magazine_parser/filtering_service'
-require_relative 'smashing_magazine_parser/anthropic_cloude/recognize_image_by_theme_strategy'
+require_relative 'lib/smashing_magazine_parser/url_builder'
+require_relative 'lib/smashing_magazine_parser/wallpapers_builder'
+require_relative 'lib/smashing_magazine_parser/save_images_service'
+require_relative 'lib/smashing_magazine_parser/filtering_service'
+require_relative 'lib/smashing_magazine_parser/anthropic_cloude/recognize_image_by_theme_strategy'
 
 # Validating arguments from console.
 begin

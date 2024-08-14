@@ -17,7 +17,6 @@ Run script (example):
 
 Here are a couple of improvements I already see:
 
-- The `SmashingMagazineParser` module name is not suitable for me at the moment.
 - Try to save and recognize in threads to speed it up.
 - Handle rate limits.
 - I tried 3-5 wallpaper pages, and they worked. However, I see that their CSS structure differs from page to page, so there might be potential issues. **However, we could implement strategy pattern for parsing different styles as i did for AI**
