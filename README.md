@@ -13,6 +13,13 @@ Run script (example):
 ./smashing.rb --month=mmyyyy --them=string
 ```
 
+### What is done
+
+- Github actions with rubocop and rspec runs
+- Overcommit with pre-hook rubocop(Shopify) run
+- AI recognition of images
+- Covered code with tests
+
 ### What to do
 
 Here are a couple of improvements I already see:
